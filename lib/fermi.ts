@@ -14,8 +14,8 @@ import {
   INCOME_PROBABILITIES_BY_AGE_MALE,
   LOOKS_LABELS,
   LOOKS_PROBABILITIES,
-  NON_SMOKER_PROBABILITY,
-  NOT_BALD_PROBABILITY_MALE,
+  NON_SMOKER_PROBABILITIES_BY_AGE,
+  NOT_BALD_PROBABILITIES_BY_AGE_MALE,
   UNMARRIED_POPULATION_10K,
   type AgeRange,
   type AssetLevel,
@@ -105,6 +105,15 @@ function resolveEducationProbability(age: AgeRange, level: EducationLevel): numb
   return EDUCATION_PROBABILITIES_BY_AGE[age][level];
 }
 
+function resolveNonSmokerProbability(gender: Gender, age: AgeRange): number {
+  return NON_SMOKER_PROBABILITIES_BY_AGE[gender][age];
+}
+
+function resolveNotBaldProbability(gender: Gender, age: AgeRange): number {
+  if (gender === "female") return 1;
+  return NOT_BALD_PROBABILITIES_BY_AGE_MALE[age];
+}
+
 function resolveHeightLabel(gender: Gender, height: HeightLevel): string {
   return HEIGHT_LABELS[height];
 }
@@ -177,12 +186,21 @@ export function estimate(conditions: Conditions): FermiResult {
   }
 
   if (conditions.nonSmoker) {
-    count = withStep(breakdown, "非喫煙", count, NON_SMOKER_PROBABILITY);
+    count = withStep(
+      breakdown,
+      "非喫煙",
+      count,
+      resolveNonSmokerProbability(conditions.gender, conditions.age),
+    );
   }
 
   if (conditions.notBald) {
-    const probability = conditions.gender === "male" ? NOT_BALD_PROBABILITY_MALE : 1;
-    count = withStep(breakdown, "薄毛でない", count, probability);
+    count = withStep(
+      breakdown,
+      "薄毛でない",
+      count,
+      resolveNotBaldProbability(conditions.gender, conditions.age),
+    );
   }
 
   if (conditions.looks !== "none") {

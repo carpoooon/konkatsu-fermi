@@ -359,6 +359,32 @@ export const LOOKS_PROBABILITIES: Record<Exclude<LooksLevel, "none">, number> = 
   top5: 0.05,
 };
 
-export const NON_SMOKER_PROBABILITY = 0.73;
-export const NOT_BALD_PROBABILITY_MALE = 0.7;
-export const INCOME_ASSET_CORRELATION_BOOST = 1.3;
+export const NON_SMOKER_PROBABILITIES_BY_AGE: Record<Gender, Record<AgeRange, number>> = {
+  male: {
+    "20-24": 0.8,
+    "25-29": 0.78,
+    "30-34": 0.72,
+    "35-39": 0.7,
+    "40-44": 0.67,
+    "45-49": 0.7,
+  },
+  female: {
+    "20-24": 0.95,
+    "25-29": 0.94,
+    "30-34": 0.92,
+    "35-39": 0.9,
+    "40-44": 0.88,
+    "45-49": 0.9,
+  },
+};
+
+export const NOT_BALD_PROBABILITIES_BY_AGE_MALE: Record<AgeRange, number> = {
+  "20-24": 0.98,
+  "25-29": 0.95,
+  "30-34": 0.88,
+  "35-39": 0.78,
+  "40-44": 0.65,
+  "45-49": 0.52,
+};
+
+export const INCOME_ASSET_CORRELATION_BOOST = 1.5;

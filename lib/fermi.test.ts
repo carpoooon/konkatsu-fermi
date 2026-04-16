@@ -5,6 +5,8 @@ import {
   EDUCATION_PROBABILITIES_BY_AGE,
   INCOME_PROBABILITIES_BY_AGE_FEMALE,
   INCOME_PROBABILITIES_BY_AGE_MALE,
+  NON_SMOKER_PROBABILITIES_BY_AGE,
+  NOT_BALD_PROBABILITIES_BY_AGE_MALE,
   type AgeRange,
 } from "@/data/statistics";
 import { defaultConditions, estimate } from "@/lib/fermi";
@@ -74,8 +76,32 @@ describe("estimate", () => {
 
     expect(result.breakdown).toHaveLength(3);
     expect(result.breakdown[1]?.probability).toBe(0.07);
-    expect(result.breakdown[2]?.probability).toBeCloseTo(0.16 * 1.3);
-    expect(result.count).toBeCloseTo(2_200_000 * 0.07 * 0.208, -2);
+    expect(result.breakdown[2]?.probability).toBeCloseTo(0.16 * 1.5);
+    expect(result.count).toBeCloseTo(2_200_000 * 0.07 * 0.24, -2);
+  });
+
+  it("applies 0.78 for male 25-29 non-smoker", () => {
+    const result = estimate({
+      ...defaultConditions(),
+      gender: "male",
+      age: "25-29",
+      nonSmoker: true,
+    });
+
+    expect(result.breakdown.at(-1)?.probability).toBe(NON_SMOKER_PROBABILITIES_BY_AGE.male["25-29"]);
+    expect(result.ratio).toBeCloseTo(0.78);
+  });
+
+  it("changes the non-smoker pass rate by age for men", () => {
+    const result = estimate({
+      ...defaultConditions(),
+      gender: "male",
+      age: "40-44",
+      nonSmoker: true,
+    });
+
+    expect(result.breakdown.at(-1)?.probability).toBe(NON_SMOKER_PROBABILITIES_BY_AGE.male["40-44"]);
+    expect(result.ratio).toBeCloseTo(0.67);
   });
 
   it("uses a different female income table than male", () => {
@@ -161,6 +187,30 @@ describe("estimate", () => {
     expect(result.count).toBe(1);
   });
 
+  it("applies 0.95 for male 25-29 notBald", () => {
+    const result = estimate({
+      ...defaultConditions(),
+      gender: "male",
+      age: "25-29",
+      notBald: true,
+    });
+
+    expect(result.breakdown.at(-1)?.probability).toBe(NOT_BALD_PROBABILITIES_BY_AGE_MALE["25-29"]);
+    expect(result.ratio).toBeCloseTo(0.95);
+  });
+
+  it("changes the notBald pass rate by age for men", () => {
+    const result = estimate({
+      ...defaultConditions(),
+      gender: "male",
+      age: "45-49",
+      notBald: true,
+    });
+
+    expect(result.breakdown.at(-1)?.probability).toBe(NOT_BALD_PROBABILITIES_BY_AGE_MALE["45-49"]);
+    expect(result.ratio).toBeCloseTo(0.52);
+  });
+
   it("keeps badge thresholds working with the new tables", () => {
     expect(estimate({ ...defaultConditions() }).badge.tier).toBe("abundant");
     expect(estimate({ ...defaultConditions(), income: "over_500" }).badge.tier).toBe("plenty");
@@ -200,6 +250,7 @@ describe("estimate", () => {
 
     expect(withNotBald.count).toBe(base.count);
     expect(withNotBald.breakdown.at(-1)?.probability).toBe(1);
+    expect(withNotBald.ratio).toBe(base.ratio);
   });
 
   it("has entries for every age key across all age-based tables", () => {
@@ -241,5 +292,18 @@ describe("estimate", () => {
     expect(results[0]!.ratio).toBeLessThan(results[1]!.ratio);
     expect(results[1]!.ratio).toBeLessThan(results[2]!.ratio);
     expect(results[2]!.ratio).toBeLessThan(results[3]!.ratio);
+  });
+
+  it("caps the income-asset correlation adjusted asset rate at 0.24 for male 25-29 income over_600 and asset over_500", () => {
+    const result = estimate({
+      ...defaultConditions(),
+      gender: "male",
+      age: "25-29",
+      income: "over_600",
+      asset: "over_500",
+    });
+
+    expect(result.breakdown[2]?.probability).toBe(0.24);
+    expect(result.ratio).toBeCloseTo(0.07 * 0.24);
   });
 });
