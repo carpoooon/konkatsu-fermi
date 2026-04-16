@@ -1,15 +1,17 @@
 import {
   AGE_LABELS,
   ASSET_LABELS,
-  ASSET_PROBABILITIES,
+  ASSET_PROBABILITIES_BY_AGE,
   EDUCATION_LABELS,
-  EDUCATION_PROBABILITIES,
+  EDUCATION_PROBABILITIES_BY_AGE,
   GENDER_LABELS,
   HEIGHT_LABELS,
   HEIGHT_PROBABILITIES_FEMALE,
   HEIGHT_PROBABILITIES_MALE,
+  INCOME_ASSET_CORRELATION_BOOST,
   INCOME_LABELS,
-  INCOME_PROBABILITIES,
+  INCOME_PROBABILITIES_BY_AGE_FEMALE,
+  INCOME_PROBABILITIES_BY_AGE_MALE,
   LOOKS_LABELS,
   LOOKS_PROBABILITIES,
   NON_SMOKER_PROBABILITY,
@@ -85,6 +87,24 @@ function resolveHeightProbability(gender: Gender, height: HeightLevel): number {
   return gender === "male" ? HEIGHT_PROBABILITIES_MALE[height] : HEIGHT_PROBABILITIES_FEMALE[height];
 }
 
+function resolveIncomeProbability(gender: Gender, age: AgeRange, level: IncomeLevel): number {
+  const table =
+    gender === "male" ? INCOME_PROBABILITIES_BY_AGE_MALE[age] : INCOME_PROBABILITIES_BY_AGE_FEMALE[age];
+  return table[level];
+}
+
+function resolveAssetProbability(age: AgeRange, level: AssetLevel, hasIncomeSelected: boolean): number {
+  const base = ASSET_PROBABILITIES_BY_AGE[age][level];
+  if (!hasIncomeSelected) {
+    return base;
+  }
+  return Math.min(1, base * INCOME_ASSET_CORRELATION_BOOST);
+}
+
+function resolveEducationProbability(age: AgeRange, level: EducationLevel): number {
+  return EDUCATION_PROBABILITIES_BY_AGE[age][level];
+}
+
 function resolveHeightLabel(gender: Gender, height: HeightLevel): string {
   return HEIGHT_LABELS[height];
 }
@@ -125,7 +145,7 @@ export function estimate(conditions: Conditions): FermiResult {
       breakdown,
       `年収 ${INCOME_LABELS[conditions.income]}`,
       count,
-      INCOME_PROBABILITIES[conditions.income],
+      resolveIncomeProbability(conditions.gender, conditions.age, conditions.income),
     );
   }
 
@@ -134,7 +154,7 @@ export function estimate(conditions: Conditions): FermiResult {
       breakdown,
       `金融資産 ${ASSET_LABELS[conditions.asset]}`,
       count,
-      ASSET_PROBABILITIES[conditions.asset],
+      resolveAssetProbability(conditions.age, conditions.asset, conditions.income !== "none"),
     );
   }
 
@@ -152,7 +172,7 @@ export function estimate(conditions: Conditions): FermiResult {
       breakdown,
       `学歴 ${EDUCATION_LABELS[conditions.education]}`,
       count,
-      EDUCATION_PROBABILITIES[conditions.education],
+      resolveEducationProbability(conditions.age, conditions.education),
     );
   }
 

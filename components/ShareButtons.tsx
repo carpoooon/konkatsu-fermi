@@ -53,11 +53,19 @@ async function captureResultPanel(fileName: string) {
 
   const { toPng } = await import("html-to-image");
   const wrapper = document.createElement("div");
+  wrapper.style.position = "fixed";
+  wrapper.style.top = "-9999px";
+  wrapper.style.left = "0";
   wrapper.style.background = "#FAFAFA";
   wrapper.style.padding = "24px";
   wrapper.style.display = "inline-block";
   wrapper.style.width = `${Math.ceil(node.getBoundingClientRect().width) + 48}px`;
-  wrapper.appendChild(node.cloneNode(true));
+  const clone = node.cloneNode(true) as HTMLElement;
+  clone.querySelectorAll<HTMLElement>("[style]").forEach((el) => {
+    el.style.transform = "none";
+    el.style.opacity = "1";
+  });
+  wrapper.appendChild(clone);
   document.body.appendChild(wrapper);
 
   try {
@@ -69,7 +77,10 @@ async function captureResultPanel(fileName: string) {
     const link = document.createElement("a");
     link.href = dataUrl;
     link.download = fileName;
+    link.rel = "noopener";
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   } finally {
     document.body.removeChild(wrapper);
   }
@@ -97,7 +108,9 @@ export function ShareButtons({ count, url, tier }: ShareButtonsProps) {
     try {
       await captureResultPanel(`konkatsu-fermi-${formatDate(new Date())}.png`);
       showToast("画像を保存しました。Instagramで投稿してください");
-    } catch {
+    } catch (error) {
+      console.error("Instagram capture failed:", error);
+      showToast("画像の保存に失敗しました。もう一度お試しください");
       return;
     }
 
@@ -126,8 +139,9 @@ export function ShareButtons({ count, url, tier }: ShareButtonsProps) {
     try {
       await captureResultPanel(`konkatsu-fermi-${formatDate(new Date())}.png`);
       showToast("画像を保存しました");
-    } catch {
-      // silent fail
+    } catch (error) {
+      console.error("Screenshot capture failed:", error);
+      showToast("画像の保存に失敗しました。もう一度お試しください");
     }
   };
 
