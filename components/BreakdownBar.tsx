@@ -10,15 +10,17 @@ export function BreakdownBar({ steps }: { steps: BreakdownStep[] }) {
   const max = Math.max(...steps.map((step) => step.count), 1);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {steps.map((step, index) => {
         const width = `${Math.max((step.count / max) * 100, 2)}%`;
 
         return (
           <div key={`${step.label}-${index}`} className="space-y-2">
-            <div className="flex items-end justify-between gap-4">
-              <p className="min-w-0 text-[13px] font-normal leading-[1.5] text-[#08131a]">{step.label}</p>
-              <p className='shrink-0 font-number text-[13px] leading-[1.5] text-[rgba(8,19,26,0.66)] [font-feature-settings:"tnum"] [font-variant-numeric:tabular-nums]'>
+            <div className="flex items-baseline justify-between gap-4">
+              <p className="min-w-0 text-[13px] font-normal leading-[1.5] text-[#08131a] [word-break:keep-all] [overflow-wrap:anywhere]">
+                {step.label}
+              </p>
+              <p className='shrink-0 font-number text-[13px] leading-[1.5] tabular-nums text-[rgba(8,19,26,0.66)] [font-feature-settings:"tnum"] [font-variant-numeric:tabular-nums]'>
                 {formatCount(step.count)}人
               </p>
             </div>
