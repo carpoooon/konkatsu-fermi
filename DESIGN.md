@@ -93,8 +93,8 @@
 |---|---|---|
 | X (Twitter) | `#000000` | tier別バズワード文言をプリセット |
 | LINE | `#00b900` | 同上 |
-| Instagram | `#E4405F` | 単色採用（グラデ禁止）。PC: 画像DL→Instagram Web 新タブ / モバイル: `instagram://story-camera` + フォールバック |
-| Screenshot | `#08131a` | html-to-image で結果パネルをPNG保存 |
+
+> Instagram・スクリーンショット機能は**モバイルSafariで動作保証不可のため廃止**（`<a download>` がフォトライブラリに保存されない、html-to-imageがiOS Safariで失敗する等）。追加するなら Web Share API (`navigator.share`) ベースで再設計が必要。
 
 ---
 
