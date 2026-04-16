@@ -2,6 +2,7 @@
 
 import { MessageCircle } from "lucide-react";
 import { useMemo } from "react";
+import { track } from "@vercel/analytics";
 
 import { Button } from "@/components/ui/button";
 import type { FermiResult } from "@/lib/fermi";
@@ -47,7 +48,10 @@ export function ShareButtons({ count, url, tier }: ShareButtonsProps) {
         variant="icon"
         className="bg-black text-white"
         aria-label="Xでシェア"
-        onClick={() => window.open(xUrl, "_blank", "noopener,noreferrer")}
+        onClick={() => {
+          track("share_click", { platform: "x", tier });
+          window.open(xUrl, "_blank", "noopener,noreferrer");
+        }}
       >
         <span className="text-[20px] font-semibold leading-none">X</span>
       </Button>
@@ -55,7 +59,10 @@ export function ShareButtons({ count, url, tier }: ShareButtonsProps) {
         variant="icon"
         className="bg-[#00b900] text-white"
         aria-label="LINEでシェア"
-        onClick={() => window.open(lineUrl, "_blank", "noopener,noreferrer")}
+        onClick={() => {
+          track("share_click", { platform: "line", tier });
+          window.open(lineUrl, "_blank", "noopener,noreferrer");
+        }}
       >
         <MessageCircle className="h-6 w-6" />
       </Button>
