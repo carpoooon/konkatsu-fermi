@@ -91,10 +91,10 @@
 
 | サービス | 色 | 備考 |
 |---|---|---|
-| X (Twitter) | `#000000` | |
-| LINE | `#00b900` | |
-| Instagram | `#E4405F` | 単色採用（グラデ禁止） |
-| URL Copy / Screenshot | `#08131a` | ニュートラル |
+| X (Twitter) | `#000000` | tier別バズワード文言をプリセット |
+| LINE | `#00b900` | 同上 |
+| Instagram | `#E4405F` | 単色採用（グラデ禁止）。PC: 画像DL→Instagram Web 新タブ / モバイル: `instagram://story-camera` + フォールバック |
+| Screenshot | `#08131a` | html-to-image で結果パネルをPNG保存 |
 
 ---
 
@@ -119,17 +119,18 @@ font-feature-settings: "tnum";
 
 ### 3.2 Type Scale
 
-| Role | Size (MD+) | Size (モバイル) | Weight | Line Height | 用途 |
-|---|---|---|---|---|---|
-| Display / Hero Number | `96px` | `64px` | 700 | 1.0 | 該当人数（ヒーロー数字） |
-| H1 | `32px` | `24px` | 700 | 1.3 | ページタイトル |
-| H2 | `22px` | `18px` | 700 | 1.4 | セクション見出し |
-| H3 | `16px` | `16px` | 600 | 1.5 | カード見出し・ラベル |
-| Body | `16px` | `16px` | 400 | 1.6 | 本文 |
-| Small | `13px` | `13px` | 400 | 1.5 | キャプション・フッター |
-| Button | `15px` | `15px` | 600 | 1.4 | ボタン内テキスト |
+| Role | Size (lg+) | Size (md) | Size (sm) | Size (モバイル) | Weight | Line Height | 用途 |
+|---|---|---|---|---|---|---|---|
+| Display / Hero Number | `60px` | `56px` | `52px` | `44px` | 700 | 1.05 | 該当人数（ヒーロー数字） |
+| H1 | `32px` | `32px` | `24px` | `24px` | 700 | 1.3 | ページタイトル |
+| H2 | `22px` | `22px` | `18px` | `18px` | 700 | 1.4 | セクション見出し |
+| H3 | `16px` | `16px` | `16px` | `16px` | 600 | 1.5 | カード見出し・ラベル |
+| Body | `16px` | `16px` | `16px` | `16px` | 400 | 1.6 | 本文 |
+| Small | `13px` | `13px` | `13px` | `13px` | 400 | 1.5 | キャプション・フッター |
+| Button | `15px` | `15px` | `15px` | `15px` | 600 | 1.4 | ボタン内テキスト |
 
-- **モバイル（375px〜）では Display を 64px、H1 を 24px に縮小**
+- **ヒーロー数字は段階的にスケール**: モバイル 44px → sm 52px → md 56px → lg 60px。カード幅からのはみ出し防止で上限 60px
+- 単位（「人」）はヒーロー数字内で `0.5em` の副次表示にして、桁が増えても枠を割らないようにする
 - 本文サイズは16pxを下回らない（モバイル可読性）
 
 ### 3.3 禁則処理
@@ -304,7 +305,7 @@ body {
 ### レスポンシブルール
 
 - 375px で水平スクロールが発生しない
-- ヒーロー数字はモバイルで 64px まで縮小
+- ヒーロー数字はモバイルで 44px まで縮小（上限 60px）、単位「人」は 0.5em 副次表示で枠はみ出しを防ぐ
 - 2カラムはmd(768px)未満で1カラムに切り替え
 - シェアボタンはモバイルで横並び（必要なら2段に折返し）
 
@@ -323,7 +324,7 @@ Accent: #1e3a5f（紺1色）
 CTA Button Bg: #08131a / Text: #ffffff / Radius: 8px / Min Height: 44px
 
 Font: "Helvetica Neue", "Hiragino Sans", Arial, "Noto Sans JP", sans-serif
-Hero Number: 96px / 700 / tabular-nums（モバイル 64px）
+Hero Number: 60px(lg) / 56px(md) / 52px(sm) / 44px(モバイル) / 700 / tabular-nums（単位「人」は 0.5em 副次表示）
 Body: 16px / 400 / line-height 1.6
 Button: 15px / 600
 
@@ -338,7 +339,7 @@ DESIGN.md に従って以下を実装してください:
 - 背景 #FAFAFA、カードは白 + rgba(8,19,26,0.14) ボーダー
 - CTAボタンは黒 #08131a ソリッド、白文字、radius 8px、高さ44px
 - 純黒 #000 と薄グレーだけのボタンは禁止
-- ヒーロー数字は 96px / tabular-nums、モバイルで 64px
+- ヒーロー数字は上限 60px / tabular-nums、モバイルで 44px。単位「人」は 0.5em の副次表示
 - 2カラムは md(768px)+、モバイルでは1カラム
 - タップターゲット 44px 以上
 - アクセントは紺 #1e3a5f のみ（色を増やさない）

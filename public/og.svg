@@ -1,10 +1,31 @@
-<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="630" fill="#0EA5E9"/>
-  <circle cx="1020" cy="110" r="180" fill="#67E8F9" fill-opacity="0.18"/>
-  <circle cx="220" cy="560" r="240" fill="#E0F2FE" fill-opacity="0.28"/>
-  <rect x="86" y="92" width="1028" height="446" rx="36" fill="white" fill-opacity="0.1" stroke="white" stroke-opacity="0.22"/>
-  <text x="96" y="236" fill="white" font-size="76" font-family="Hiragino Sans, Noto Sans JP, sans-serif" font-weight="700">婚活フェルミ推定</text>
-  <text x="96" y="326" fill="#E0F2FE" font-size="34" font-family="Hiragino Sans, Noto Sans JP, sans-serif">あなたの理想の相手、日本に何人?</text>
-  <text x="96" y="420" fill="white" font-size="28" font-family="Hiragino Sans, Noto Sans JP, sans-serif">条件を入れるだけで未婚者数をざっくり可視化</text>
-</svg>
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#FAFAFA"/>
 
+  <!-- 左上の装飾ドット -->
+  <circle cx="1080" cy="90" r="140" fill="#1e3a5f" fill-opacity="0.05"/>
+  <circle cx="120" cy="560" r="180" fill="#08131a" fill-opacity="0.03"/>
+
+  <!-- ラベル -->
+  <text x="80" y="140" fill="#1e3a5f" font-size="22" font-family="Hiragino Sans, Noto Sans JP, sans-serif" font-weight="600" letter-spacing="0.1em">KONKATSU FERMI</text>
+
+  <!-- タイトル -->
+  <text x="80" y="240" fill="#08131a" font-size="92" font-family="Hiragino Sans, Noto Sans JP, sans-serif" font-weight="700" letter-spacing="0.02em">婚活フェルミ推定</text>
+
+  <!-- サブコピー -->
+  <text x="80" y="310" fill="#08131a" font-size="38" font-family="Hiragino Sans, Noto Sans JP, sans-serif" font-weight="500">理想の相手、日本に何人？</text>
+
+  <!-- メトリック風のボックス -->
+  <rect x="80" y="360" width="1040" height="180" rx="16" fill="white" stroke="#08131a" stroke-opacity="0.14" stroke-width="2"/>
+
+  <text x="112" y="410" fill="#08131a" font-opacity="0.66" font-size="20" font-family="Hiragino Sans, Noto Sans JP, sans-serif" font-weight="400">該当人数</text>
+
+  <text x="112" y="498" fill="#08131a" font-size="88" font-family="Helvetica Neue, Inter, Arial, sans-serif" font-weight="700" letter-spacing="-0.02em">約 X,XXX</text>
+  <text x="518" y="498" fill="#08131a" fill-opacity="0.66" font-size="44" font-family="Hiragino Sans, Noto Sans JP, sans-serif" font-weight="600">人</text>
+
+  <!-- 右側のバッジ -->
+  <rect x="880" y="410" width="206" height="60" rx="30" fill="#08131a"/>
+  <text x="910" y="450" fill="white" font-size="24" font-family="Hiragino Sans, Noto Sans JP, sans-serif" font-weight="700">激レア 💎</text>
+
+  <!-- フッター -->
+  <text x="80" y="590" fill="#08131a" fill-opacity="0.66" font-size="22" font-family="Hiragino Sans, Noto Sans JP, sans-serif" font-weight="500">条件を入れるだけで、未婚者数を瞬時に可視化</text>
+</svg>
